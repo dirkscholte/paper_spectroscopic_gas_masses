@@ -1,0 +1,507 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+\usepackage{tabularx}
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+%\usepackage{amssymb}	% Extra maths symbols
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[Cold gas masses for spectroscopic surveys]{Cold gas mass measurements for the era of large optical spectroscopic surveys}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[D. Scholte et al.]{
+Dirk Scholte,$^{1}$\thanks{E-mail: dirk.scholte.20@ucl.ac.uk}
+Am\'elie Saintonge,$^{1}$
+\\
+% List of institutions
+$^{1}$Department of Physics and Astronomy, University College London, London, WC1E 6BT, UK
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2022}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+Gas plays an important role in many processes in galaxy formation and evolution, but quantifying the importance of gas has been hindered by the challenge to measure gas masses for large samples of galaxies. Datasets of direct atomic and molecular gas measurements are sufficient to establish simple scaling relations, but often not large enough to quantify three-parameter relations, or second order dependencies.  As an alternative approach, we derive here indirect cold gas measurements from optical emission lines using photoionization models for galaxies in the SDSS main galaxy sample and the PHANGS-MUSE survey. We calibrate the gas surface density measurements using xCOLD GASS and PHANGS-ALMA molecular gas measurements to ensure our measurements are reliable. We demonstrate the importance of taking into account the scale-dependence of the relation between optical depth ($\tau_V$) and gas surface density and provide a general prescription to estimate $\Sigma_{gas}$ from $\tau_V$, metallicity and the dust-to-metal ratio, at any arbitrary physical resolution. To demonstrate that the indirect cold gas masses are accurate enough to quantify the role of gas in galaxy evolution, we study the mass-metallicity relation (MZR) of SDSS galaxies and show that as a third parameter, gas mass is better than SFR at reducing the scatter of the relation, as predicted by models and simulations. 
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+keyword1 -- keyword2 -- keyword3
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+Gas is one of the most important ingredients in describing the formation and evolution of galaxies \citep{tinsley1980}. It is the fuel for star formation and an important contributor to the total mass of galaxies. The cold interstellar medium is sensitive to the properties of the circumgalactic medium and the large-scale environment, which regulate its total mass through accretion, and on the other hand its properties determine the rate and efficiency of the star formation process \citep[e.g.][]{saintonge22}. To study these multi-scale processes in detail, reliable measurements of the cold gas content of large samples of galaxies are required.
+
+There have been extensive efforts to derive atomic and molecular gas masses for galaxies in the local universe. The total atomic gas mass of galaxies in the local universe has been measured for large galaxy samples through observations of the HI 21cm emission line as part of both blind and targeted surveys such as HIPASS \citep{barnes2001}, HIJASS \citep{lang2003}, EBHIS \citep{winkel2010}, ALFALFA \citep{haynes2011} and xGASS surveys \citep{catinella2018}. The resolved atomic gas surface densities have been studied through surveys such as THINGS \citep{walter2008} and VIVA \citep{chung2009}.  Molecular gas masses are most often measured via observations of emission lines of the CO molecule, in particular CO(1-0) and CO(2-1) in the nearby universe, extrapolated to total molecular masses via the CO-to-H$_2$ conversion function, $\alpha_{CO}$ . This technique was used to derive the integrated gas content of local galaxies in for example the FCRAO \citep{young95}, xCOLD GASS \citep{saintonge2017}, and  ALLSMOG \citep{cicone17} surveys. Other surveys have mapped CO at kiloparsec-scales for samples of $\sim$50-100 galaxies [e.g. HERACLES \citep{leroy2013}, EDGE-CALIFA \citep{bolatto2017}, ALMaQUEST \citep{lin2019}], and at 100s-pc scales \citep[PHANGS-ALMA, ][]{leroy2021}. These surveys established our understanding of the atomic and molecular gas content and distribution in galaxies, as well as the cosmic cold gas mass density in the local Universe \citep[e.g.][]{casasola2017, jones2018, fletcher2021}. General trends in the cold gas content and distribution are quantified as a function of galaxy type, stellar mass, star formation rate and other parameters through a range of scaling relations \citep[see references above, and overview in ][]{saintonge22}. These measurements have driven greater understanding of the role of cold gas in galaxy evolution, and provide tests on  models and simulations \citep[e.g.][]{lilly2013, dave2020, feldmann2020}. 
+
+Important questions however remain unanswered, as even larger samples are required to further our understanding of the role of cold gas in processes in galaxy physics, especially those relating to environment, large scale structure, and dark matter halo properties. To study the complicated ways gas regulates star formation and galaxy evolution, we need samples several orders of magnitude larger than can currently be derived through direct observations of CO or HI emission lines. However, such large samples of gas mass measurements can be obtained through indirect methods that rely observations of dust in either emission or absorption. These methods assume dust and gas are well mixed, which allows the conversion of dust mass to gas mass through a dust-to-gas ratio. Dust masses are most accurately measured through observation of dust emission at far infrared wavelengths that probe the peak or Rayleigh-Jeans tail of the thermal emission \citep[e.g.][]{scoville2014}. Cold gas mass estimates from dust emission produce measurements with a scatter of $\sim$0.15 dex \citep{janowiecki2018}. 
+
+
+An alternative is to estimate the gas mass from optical spectroscopy, relying on the measurement of dust attenuation through the Hydrogen Balmer lines, in combination with metallicity estimates to estimate the dust-to-gas ratio in the ISM of galaxies \citep{guver2009, heiderman2010, brinchmann2013}. Gas surface densities derived from the Balmer decrement trace the total gas content along the line of sight instead of atomic or molecular gas separately \citep{concas2019, barrera-ballesteros2020}. These measurements  correlate with direct measurements of atomic and molecular gas \citep{concas2019, yesuf2019, piotrowska2020, barrera-ballesteros2020}. However, the scatter in these gas surface density measurements is large compared to other methods at $\sim$0.3 dex for global observations and larger scatter for resolved observations. The calibration of these measurements to direct atomic and molecular gas measurements is difficult due to the different physical regions and gas phases traced. Differences in aperture sizes and observational resolutions further complicate the calibration of gas mass measurements through optical spectroscopy. 
+
+Despite these complications, this technique has the potential of providing the largest samples of indirect cold gas masses through surveys such as SDSS \citep[][]{abazajian2009, piotrowska2020}. Future surveys will further expand this sample in the coming years. Most imminently, the DESI survey will push the number of galaxies with optical spectra into the tens of millions \citep{desi2022}. This will be followed by the 4MOST, WEAVE and MOONS surveys \citep[][]{driver2019, dalton2012, cirasuolo2020}. Together these surveys will expand the number of galaxy spectra by several orders of magnitude and open up parameter space that has so far remained out of reach (e.g. higher redshifts and lower stellar masses). This context highlights the potential of spectroscopic cold gas mass measurements, if reliable calibrtions can be derived.  
+
+In this study, we derive gas surface densities and gas masses from SDSS and PHANGS-MUSE spectroscopy using photoionization models and calibrate our measurements with integrated observations from the xCOLD GASS survey and resolved observations from the PHANGS-ALMA survey. We apply our gas mass measurements to study the role of gas in the scatter of the relation between stellar mass and gas phase metallicity.
+
+In Section \ref{sec:photoionization_model} we describe the photoionization models and the simulation based inference methods. In Section \ref{sec:model_validation} we validate the measurements we derive from our models and in Section \ref{sec:gas_surface_density} we calibrate the gas surface densities we derive using PHANGS-MUSE and xCOLD GASS. In Section \ref{sec:MZR} we show how the gas mass measurements we derive can be used to measure the role of gas in the MZR. We summarize our results and draw conclusions in Section \ref{sec:conclusion}.
+
+\section{Photoionization model}
+\label{sec:photoionization_model}
+Photoionization models allow us to simulate the optical line emission of star forming galaxies with a large variety of physical conditions. These simulated line emissions are derived from basic physical principles such as radiative transfer, chemical gas composition, dust depletion and dust attenuation, under the assumption of a spherical shell geometry for the gas with a central ionisation source. When the line emissions of observed galaxies are matched to these simulations we unlock important information about the physical conditions of the ISM in galaxies. We construct our models with five free parameters: unattenuated H-alpha flux ($F(H\alpha)$), total metallicity ($Z$), ionization parameter($U$), dust-to-metal ratio ($\xi$) and optical depth ($\tau_V$). The photoionization models are used to train a neural network for posterior inference using Simulation Based Inference \citep{tejero-cantero2020}. The trained neural network is then applied using measured emission line fluxes to infer the best values of our five free parameters.
+
+We use a set of 8 emission lines to recover the free parameters in our photoionization models: OII[3727\AA, 3729\AA], H$\beta$, OIII[4959\AA, 5007\AA], NII[6548\AA], H$\alpha$ and NII[6584\AA]. This set of emission lines contains the majority of strong emission lines in the optical spectra of star forming galaxies. The SII[6717\AA, 6731\AA] emission lines are excluded from our procedure. Whilst we could include these lines in our measurements we have chosen not to as there are no unambiguous measurements of the amount of sulfur locked in dust grains \citep{jenkins2009}, which could have a significant impact on the SII[6717\AA, 6731\AA] emission line fluxes. Additionally, the wavelength of the Sulfur optical strong lines means they are redshifted outside of the wavelength range of surveys such as SDSS and DESI for all but the lowest redshifts. 
+
+\subsection{Model description}
+We use the Cloudy photoionization code, version C17.02 \citep{ferland2017} and the pyCloudy Python wrapper for Cloudy \citep{morisset2013}.  The photoionization models are produced using similar procedures as in \cite{charlot2001, brinchmann2013} and \cite{byler2017}. We use FSPS to produce synthetic stellar population spectra \citep{conroy2009,conroy2010} using MIST isochrones \citep{choi2016}. These are produced using a Chabrier IMF \cite{chabrier2003} with a lower mass limit of 0.08 $M_\odot$ and an upper mass limit of 120 $M_\odot$. A constant star formation history is assumed. We evaluate the modelled spectra at an age of 2 Myr. This is within the range of ages where stars produce ionizing radiation consistent with HII regions \citep{byler2017}.
+
+\subsubsection{Geometry and ionizing spectrum intensity}
+The models assume a central irradiating source within a sphere of gas of uniform density, as in \cite{byler2017}. We assume a Hydrogen density ($n_H$) of 100 cm$^{-3}$ and an inner radius of the gas cloud ($R$) of $10^{19}$ cm ($\sim 3$ pc). 
+
+In these models the rate of Hydrogen ionizing photons of a single stellar population (SSP) is defined as:
+\begin{equation}
+    \hat{Q}(t) \equiv \frac{1}{hc} \int_0^{\lambda_L} d\lambda \lambda S_{\lambda}(t) ,
+\end{equation}
+where $S_{\lambda}(t)$ is the luminosity emitted per unit wavelength per solar mass by a stellar generation of age $t$, $\lambda_{L}$ is the maximum wavelength capable of ionizing Hydrogen atoms (912 \AA) and $c$ is the speed of light. The rate of ionizing photons is set through the ionization parameter. This parameter is defined as:
+\begin{equation}
+    U \equiv \frac{Q(t)}{4 \pi R^2 n_H c},
+\end{equation}
+where $Q(t)$ is the total rate of ionizing photons of the ionizing source. The ionization parameter value dictates the stellar mass needed to produce the number of ionizing photons with the physical conditions specified as $Q(t) = M_* \times \hat{Q}(t)$.
+
+\subsubsection{Chemical abundances}
+The cosmic abundances used in our model are based on solar abundances from \cite{grevesse2010}, where $Z_{\odot}$ = 0.0142. The solar abundances of the elements implemented in our model are shown in Table \ref{tab:metallicities_depletions}. The elemental abundances are scaled linearly with metallicity $Z/Z_{\odot}$, except for Helium, Carbon and Nitrogen. For these elements, we adopt the scalings of \cite{dopita2013}, which implement the measured scaling of Carbon and Nitrogen as a function of Oxygen abundance of \cite{vanzee1998}, accounting for the production of these elements through secondary nucleosynthesis.
+
+\begin{table}
+ \centering
+ \caption{Solar abundances and depletion factors as adopted in the models. Solar abundances from \protect \cite{grevesse2010} and reference depletion factors from \protect \cite{dopita2013}.}
+ \begin{tabularx}{\columnwidth}{p{0.3\columnwidth} p{0.3\columnwidth} p{0.3\columnwidth} }
+\hline
+\hline 
+\textbf{Element (X)} & \textbf{log(X/H)} & \textbf{reference log($D$)}             \\ \hline
+H                    & 0                 & 0                                       \\
+He                   & --1.01            & 0                                       \\
+C                    & --3.57            & --0.30                                  \\
+N                    & --4.60            & --0.05                                  \\
+O                    & --3.31            & --0.07.                                 \\
+Ne                   & --4.07            & 0                                       \\
+Na                   & --5.75            & --1.00                                  \\
+Mg                   & --4.40            & --1.08                                  \\
+Al                   & --5.55            & --1.39                                  \\
+Si                   & --4.49            & --0.81                                  \\
+S                    & --4.86            & 0                                       \\
+Cl                   & --6.63            & --1.00                                  \\
+Ar                   & --5.60            & 0                                       \\
+Ca                   & --5.66            & --2.52                                  \\
+Fe                   & --4.50            & --1.31                                  \\
+Ni                   & --5.78            & --2.00                                  \\ \hline
+\end{tabularx}
+\label{tab:metallicities_depletions}
+\end{table}
+
+Our models differ from those of \cite{byler2017} as we introduce a variable dust-to-metal ratio ($\xi$), as in the \cite{charlot2001} and \cite{brinchmann2013} models. We vary the dust-to-metal ratio through a linear scaling with log($D$) for each element,  similar to the method of \cite{jenkins2009}. For gas with $Z = Z_{\odot}$  the depletion factor $D$ of element X is defined as 
+\begin{equation}
+    \textrm{log}(D)=\textrm{log}\{N(X)/N(H)\} - \textrm{log}\{N(X)/N(H)\}_{\odot} 
+\end{equation}
+
+We anchor the scaling of the depletion factors of individual elements at zero depletion and at the depletion values of \cite{dopita2013}, which can be found in Table \ref{tab:metallicities_depletions}. From these anchor points, we make linear extrapolations in log($D$) for each element. 
+
+\subsubsection{Optical depth and gas surface density}
+We calculate the optical depth of the ISM following \cite{charlot2000}. This defines a transmission function:
+\begin{equation}
+\label{CH2000_transmission}
+    T_{\lambda} = e^{-\tau_{\lambda}}
+\end{equation}
+\begin{equation}
+\label{dust_attenuation}
+    \tau_{\lambda} = \tau_{V} \left[ \frac{\lambda}{5500 
+\mathring{\mathrm{A}}} \right]^{-n}
+\end{equation}
+
+We use an exponent $n = 1.3$, this value being representative of the optical depth for young stars in birth clouds \citep{dacunha2008}. Gas surface densities can be derived using the optical depth measurement and other free parameters in our model. They are calculated through the following equation derived by \cite{brinchmann2013}: 
+\begin{equation}
+    \label{eq:gas_equation_brinchmann}
+    \Sigma_{gas} = 0.2 \frac{\tau_{V}}{\xi Z} (M_{\odot}\textrm{ pc}^{-2})
+\end{equation}
+where the combination of $\xi Z$ is the gas-to-dust ratio.
+\begin{table}
+ \centering
+ \caption{Ranges of the uniform priors on the model parameters. The steps are the number of photoionization models generated along the direction of each parameter that was modelled with Cloudy.}
+ \label{tab:model_priors}
+\begin{tabularx}{\columnwidth}{lll}
+\hline
+\hline
+\textbf{Parameter} & \textbf{Description}            & \textbf{Range}                                \\ \hline
+$F(H\alpha)$      & Unattenuated H$\alpha$ flux     & 0.0 $\leq$ log($F(H\alpha)$) $\leq$ 5.0      \\
+$Z$                & Total metallicity               & --1.0 $\leq$ log($Z$) $\leq$ 0.7 (24 steps)   \\
+$U$                & Ionizaton parameter             & --4.0 $\leq$ log($U$) $\leq$ --1.0 (33 steps) \\
+$\xi$              & Dust-to-metal ratio             & 0.1 $\leq$ $\xi$ $\leq$ 0.6 (9 steps)         \\
+$\tau_{V}$         & Total optical depth          & --2 $\leq$ log($\tau_{V}$) $\leq$ 0.6             \\
+\hline
+\end{tabularx}
+\end{table}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig1.pdf}
+    \caption{Modelled emission line ratios plotted onto BPT diagrams of SDSS DR7 galaxies (star forming (blue) and not star forming (grey) \citep{kauffmann2003}). The modelled total metallicity increases along the horizontal lines on the left side of the left plot, where -1.0 < $Z$ < 0.7. The vertical lines in the same region are the model evaluated at various effective ionization parameters, where -4.0 < $U$ < 0.0). The separate grids with different colours are models evaluated for different depletion factors, where 0.1 < $\xi$ < 0.6 (from low to high: dark to light). Here the models are shown for unattenuated emission.}
+    \label{fig:photoionization_model_BPT}
+\end{figure*}
+
+\subsection{Simulation based inference}
+We use simulation based inference as it allows us to perform parameter inference at a fraction of the computational cost of standard inference procedures using MCMC sampling. This makes it possible to apply our model to the largest survey samples available. We use the emission line fluxes produced by the photoionization model over a large parameter space in $F(H\alpha)$, $Z$, $U$, $\xi$ and $\tau_V$ to train a sequential neural posterior estimation model (SNPE, \cite{greenberg2019}) using masked amortized flow.  We draw $5\times10^6$ samples from the uniform prior distributions defined in Table \ref{tab:model_priors}. Using the drawn parameters we simulate emission line fluxes using the photoionization model, and a Gaussian noise model. The SNPE model is trained using the standard settings in the Simulation Based Inference package \citep{tejero-cantero2020}. This includes a learning rate of $5 \times 10^{-4}$ using an Adam optimizer, a validation fraction of 0.1 and at training stopping criterion of 20 epochs without improvement on the validation set. 
+
+Due to the computational demands of the photoionization modelling we do not run a Cloudy model for each drawn sample during training of the neural network. Instead we produce a grid of approximately $10^{4}$ photoionization models for parameters $Z$, $U$ and $\xi$. The dense sampling allows us to approximate the continuous relation between our parameters and emission line fluxes through a linear interpolation of the modelled grid points. The dust attenuation correction is applied for each drawn sample directly using the optical depth calculated. The Cloudy models predict emission line fluxes for a large set of emission lines. The results of some of the most important emission line flux predictions are shown in figure \ref{fig:photoionization_model_BPT}. These are BPT diagrams \citep{baldwin1981} showing the modelled emission line strengths in grids of metallicity and ionization parameter. The different colours represent models with different dust-to-metal ratios. The blue and black contours overplotted are the measured emission line flux ratios for SDSS star-forming galaxies and AGN, respectively \citep{brinchmann2004, kauffmann2003, tremonti2004}. The models show line ratios for unattenuated emission.
+
+We use an additive Gaussian noise model to simulate noise in the training sample. The noise model is dependent on the observed wavelength which allows us to take into account the variable noise levels due to the wavelength dependence on the spectrograph throughput. We use the noise in the used data set to simulate the noise in the training sample. We use the full array of emission line flux measurements and emission line flux errors as the input vector for the inference model. We input zero for the flux and flux error when the wavelength of an emission line is outside the wavelength range of the spectrograph. We also apply this method to the simulated data to train the inference procedure on missing data. 
+
+In Figure \ref{fig:corner_plot_example} we show the posterior distribution of one of the galaxies in our sample. The contours show the 1, 2 and 3-$\sigma$ ranges from dark to light. This galaxy is also part of the xCOLD GASS sample and its location on the $M_{*}$-SFR plane is marked by the red star on Figure \ref{fig:MH2_FH2_SFE_comparison_xCOLDGASS}. This figure clearly shows the degeneracy between some of the parameters in the photoionization models. Most notably there is a clear degeneracy between metallicity and the ionization parameter and between unattenuated H$\alpha$ flux and optical depth. It is clear from this figure that the inference procedure we use is able to explore these degenerate non-Gaussian parameter spaces, as has also been shown for other inference problems \citep{greenberg2019}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig2.pdf}
+    \caption{An example of a posterior distribution derived using Simulation Based Inference. This posterior was derived for a main sequence galaxy in our sample with SPECOBJID 492246374255951872 in SDSS DR8. This galaxy is also part of the xCOLD GASS sample. The red star on Figure \ref{fig:MH2_FH2_SFE_comparison_xCOLDGASS} marks this galaxy on the $M_{*}$-SFR plane.}
+    \label{fig:corner_plot_example}
+\end{figure}
+
+\section{Model validation}
+\label{sec:model_validation}
+We validate the results of our models by comparing the derived parameters to either direct measurements of the same quantities, or estimates using other methods. We use emission line flux measurements from the SDSS DR8 MPA-JHU catalogue \citep{brinchmann2004, kauffmann2003a, tremonti2004}. From this catalogue we select star forming galaxies using the criterion described in \cite{kauffmann2003}. We apply a signal-to-noise selection of 15$\sigma$ on the H$\alpha$ emission line only, to ensure we only include high quality measurements whilst avoiding selection biases which could arise if additional signal-to-noise criteria were applied to other emission lines \citep{yates2012, kashino2016}. We select galaxies with redshifts with $z \geq 0.027$. Within this range we have access to the OII[3727, 3729] emission lines, which are important to constrain the full range of parameters we use in our photoionization models.
+
+\subsection{In-fiber star formation rates}
+We derive fiber star formation rates (SFRs) from the inferred unattenuated H$\alpha$ flux. We convert the flux to luminosity using the redshift derived luminosity distance. The H$\alpha$ luminosity is converted to SFR using \cite{kennicutt1998}:
+\begin{equation}
+    \textrm{SFR} \approx 7.9 \times 10^{-42} \left( \frac{L_{H\alpha}}{\textrm{erg s}^{-1}} \right) (\textrm{M}_{\odot} \textrm{ yr}^{-1}) .
+\end{equation}
+The derived SFRs are compared to the in-fiber SFRs from \cite{brinchmann2004} in Figure \ref{fig:model_SFR_vs_brinchmann04}. These SFR measurements are derived through a similar method to ours, and as expected, the two sets of measurements are in agreement with a median offset of $-$0.05$_{-0.15}^{+0.24}$. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig3.png}
+    \caption{A comparison between the fiber star formation rates derived and the fiber star formation rates derived by \protect \cite{brinchmann2004} for star forming galaxies. A histogram of the distribution of star formation rates we derive is shown in grey.}
+    \label{fig:model_SFR_vs_brinchmann04}
+\end{figure}
+
+\subsection{Gas phase metallicity}
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig4.png}
+    \caption{A direct comparison between the gas phase metallicities we derived and metallicities derived using the \protect \cite{pettini2004} O3N2 estimator (left) and \protect \cite{tremonti2004} metallicities (right). The one-to-one relation (black), median offset (red), and running median (blue) are shown in the overplotted lines. A histogram of the distribution of the metallicities we derive is shown on the left of each plot. The plot on the right contains less data points as we show only the cross-matched sample with \protect \cite{tremonti2004} metallicities.}
+    \label{fig:model_metallicity_vs_PP04_O3N2}
+\end{figure*}
+
+We compare our gas phase metallicities to metallicities derived using (1) the \cite{pettini2004} calibration of the O3N2 metallicity indicator, and (2) the photoionization modelling of \cite{tremonti2004}. The O3N2 indicator is given by:
+\begin{equation}
+\label{eq:O3N2_indicator}
+    \textrm{O3N2 = log}\left(\frac{\textrm{OIII} [5007\textrm{\AA}] / \textrm{H}\beta}{\textrm{NII} [6584\textrm{\AA}] / \textrm{H}\alpha}\right)
+\end{equation}
+as described by \citet{alloin1979}, and the metallicity calibration from \cite{pettini2004} is:
+\begin{equation}
+    \textrm{12 + log(O/H)} = 8.73 - 0.32 \times \textrm{O3N2}.
+\end{equation}
+Figure \ref{fig:model_metallicity_vs_PP04_O3N2} shows the one-to-one relation (black), a running median (dark blue, 16$^{\textrm{th}}$ and 84$^{\textrm{th}}$ percentiles dashed) and the individual measurements (light blue). There is a median offset of 0.18$_{-0.06}^{+0.05}$ between the metallicities using the \cite{pettini2004} calibration and our estimates. This is in agreement with expectations, as theoretical metallicity derivations using photoionization modelling typically result in higher values than empirical calibrations \citep{kewley2008}. Our comparison with the \cite{tremonti2004} metallicities show a smaller median offset (-0.08$_{-0.06}^{+0.08}$) but an overall trend in the median offset as a function of metallicity. Overall, barring a constant offset we get more consistent agreement with the empirical O3N2 metallicity calibration from \cite{pettini2004} than with the theoretical calibration from \cite{tremonti2004} for gas phase metallicities. The discrepancy with the metallicity measurements from \cite{tremonti2004} can be explained by differences in the photoionization models such as the implementation of the metallicity scaling of secondary nucleosynthesis elements (Carbon, Nitrogen and Oxygen) and elemental depletion factors. We also compare the metallicities returned by our model to a larger set of calibrations in Appendix \ref{sec:appendix_metallicities}. These results show that our results are within the range of metallicities derived through both theoretical and empirical calibrations available. 
+
+\subsection{Optical depth}
+We compare the optical depth measurements we derive using our photoionization modelling and inference procedure to optical depths derived just from the Balmer decrement in Figure \ref{fig:model_dust_attenuation_vs_Balmer_decrement}. The optical depths directly derived from the Balmer decrement are calculated through the same method we use to attenuate our photoionization model fluxes:
+\begin{equation}
+    \tau_{V} = \frac{\lambda_{V}^{-n}}{\lambda_{\textrm{H}\beta}^{-n} - \lambda_{\textrm{H}\alpha}^{-n}} \textrm{ln}\left( \frac{\textrm{H}\alpha/\textrm{H}\beta}{2.86} \right) .
+\end{equation}
+
+Our measurements are in agreement with the optical depths derived using the Balmer decrement, with a small offset of $-$0.07$_{-0.11}^{+0.3}$. This shows that the optical depth we derive through our modelling is mostly determined by the H$\alpha$ and H$\beta$ flux measurements. The addition of the other emission lines does not significantly influence the measurement. This is an expected outcome, as the emission line flux of the other lines such as [NII] and [OIII] are dependent on the other free parameters in our model, and therefore much less constraining than the Hydrogen lines in the specific case of attenuation. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig5.png}
+    \caption{A comparison between the optical depth values we derived and optical depth derived using the Balmer decrement. A histogram of the distribution of optical depths we derive is shown in grey.}
+    \label{fig:model_dust_attenuation_vs_Balmer_decrement}
+\end{figure}
+
+\section{Applications}
+
+\subsection{Optical depth as a proxy for gas surface density}
+\label{sec:gas_surface_density}
+Optical depth is an often used proxy to estimate gas surface density and gas mass of galaxies \citep[e.g.][]{guver2009, heiderman2010, brinchmann2013, concas2019}. We use MUSE observations from the PHANGS-MUSE survey \citep{emsellem2021} to study the resolved relation between optical depth and gas surface density through comparison to the PHANGS-ALMA survey molecular gas surface densities \citep{leroy2021}. We also compare cold ISM gas surface densities estimated from SDSS emission line flux data using our photoionization model to direct CO measurements from the xCOLD GASS survey \citep{saintonge2017}.
+
+\subsubsection{Resolved gas surface density comparisons to PHANGS-ALMA}
+As discussed in the Introduction, the relation between optical depth and gas surface density is a useful proxy to estimate the atomic and/or molecular gas content of large samples of galaxies. While the general method can also be applied to mapping  observations, significant care must be taken because globally validated relations between optical depth and gas surface density (e.g.  Eq. \ref{eq:gas_equation_brinchmann}), cannot be applied directly to resolved observations. This is because the optical depth measurement in an integrated observation is largely determined by the star forming regions where most of the emission line flux originates. This makes the optical depth in an integrated observation a biased measurement of gas surface density, dominated by star forming regions with high gas surface density. Global relations between optical depth and gas surface densities are therefore in practice relations between the optical depth measured (mostly) in high gas surface density star forming regions and the mean gas surface density averaged over the galaxy. The resolved relation between $\tau_V$ and $\Sigma_{gas}$ is therefore a function of the physical resolution of the observations. For example, in Figure \ref{fig:MUSE_optical_depth_comparison_PHANGS_ALMA} it is obvious that the integrated gas surface density relation from Equation \ref{eq:gas_equation_brinchmann} (dot-dashed line) does not accurately describe the $\tau_V-\Sigma_{gas}$ relation at $\sim500$ pc resolution. 
+
+To derive a flexible scale-dependent relation, we need to parameterize a correction to the global relation (Eq. \ref{eq:gas_equation_brinchmann}) that will factor in the different environments which are averaged over in an observation at any given resolution. The mean correction needed for resolved gas surface densities sampled through the optical depth measurement can be described by the following equation:
+\begin{equation}
+    \overline{\Sigma}_{\textrm{gas}}^{\textrm{correction}} = \overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}} 
+    \label{eq:gas_correction}
+\end{equation}
+where $\overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha}$ is the H$\alpha$-weighted mean gas surface density and $\overline{\Sigma}_{\textrm{gas}}$ is the mean gas surface density. We use H$\alpha$ flux as the weighting, as regions brightest in this line within a given resolution element are also those that contribute the most its $\tau_V$ measurement. In Figure \ref{fig:resolution_dependence_tau_SD} we show that the H$\alpha$ flux is a reliable weighting to retrieve the correction needed due to the environments sampled by optical depth measurements, as the H$\alpha$-weighted mean optical depth is resolution independent, unlike the mean optical depth.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig6.pdf}
+    \caption{Resolution dependence of optical depth measurements and gas surface densities probed. Optical depths are derived using the Balmer decrement from the PHANGS-MUSE data and molecular Hydrogen surface densities are derived from PHANGS-ALMA.}
+    \label{fig:resolution_dependence_tau_SD}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig7.pdf}
+    \caption{Resolved environmental bias in the gas surface densities sampled through the optical depth. Optical depths are derived using the Balmer decrement from the PHANGS-MUSE data and molecular Hydrogen surface densities are derived from PHANGS-ALMA.}
+    \label{fig:Excess_SD_dependence_resolution_tau}
+\end{figure}
+
+We quantify the scale of the correction factor using molecular gas surface density maps from the CO(2-1) PHANGS-ALMA observations,  and the H$\alpha$ maps from the PHANGS-MUSE observations, for all 19 galaxies in the overlap of the two surveys. We do this by convolving the ALMA and MUSE maps to a range of resolutions between $\sim2"$ and $\sim100"$ ($\sim$ 100 to 10000 pc). Figure \ref{fig:Excess_SD_dependence_resolution_tau} shows the correction factor of Eq. \ref{eq:gas_equation_correction} for each galaxy, at each spatial resolution probed. As expected, the correction factor varies with the physical scale, but also displays systematic galaxy-to-galaxy variations best parametrised by the overall optical depth (color-coding in Fig. \ref{fig:Excess_SD_dependence_resolution_tau}). 
+Using these two dependencies of the resolved environmental bias, we construct a correction on the integrated relation. This allows us to describe the resolved relation between optical depth and gas surface density as:
+\begin{equation}
+\label{eq:resolved_gas_equation}
+    \Sigma_{\textrm{gas}}^{\textrm{resolved}} = \Sigma_{\textrm{gas}}^{\textrm{integrated}}(\tau_{V}, Z, \xi) + \Sigma_{\textrm{gas}}^{\textrm{correction}}(\textrm{FWHM}, \tau_{V}, Z, \xi), 
+\end{equation}
+where the first term on the right hand side is the integrated relation presented in Eq.\ref{eq:gas_equation_brinchmann}, and FWHM is the full width at half maximum resolution of the resolved observations in parsec. The correction is defined as:
+\begin{equation}
+\label{eq:gas_equation_correction}
+    \Sigma_{\textrm{gas}}^{\textrm{correction}} =
+    \overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}}
+    = \frac{9.56\textrm{FWHM}^{-0.637}\tau_{V}^{2.98}}{\xi Z}
+\end{equation}
+which is based on the best-fit linear relation between FWHM, $\overline{\tau}_{V}^{\textrm{H}\alpha}$ and $\overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}}$ in log-space. The parameters $\xi$ and $Z$ are included for the dust to gas conversion but not assigned any coefficients, the precise role of these parameters in the relation needs to be verified using data sets that span a larger metallicity range. The best fit relation is shown in Figure \ref{fig:Excess_SD_dependence_resolution_tau}.
+
+We apply our photoionization models to the PHANGS-MUSE observations at $7.5"$ resolution and compare the gas surface density measurements we derive using Equations \ref{eq:resolved_gas_equation} and \ref{eq:gas_equation_correction} to those directly measured. As the optical depth measurement is sensitive to the total atomic$+$molecular gas content along the line of sight, we add to the molecular gas surface density measured from the PHANGS-ALMA CO(2-1) maps \citep{leroy2021} a constant atomic hydrogen surface density of 6 M$_{\odot}$ pc$^{-2}$ \citep{barrera-ballesteros2020}. The solid red line shows the resolved $\tau_V-\Sigma_{gas}$ relation using the correction factor from Equations \ref{eq:resolved_gas_equation} and \ref{eq:gas_equation_correction}. The black solid and dashed lines show the running median and 16th and 84th percentile measurements. This figure clearly shows the importance of taking into account the dependence on observational resolution of the relation between optical depth and gas surface density. 
+
+In Figure \ref{fig:MUSE_gas_surface_density_comparison_PHANGS_ALMA} we show a direct comparison between the gas surface densities we derive using the resolved gas surface density relation (using Equations \ref{eq:resolved_gas_equation} and \ref{eq:gas_equation_correction}) and the direct measurements from PHANGS-ALMA. Detections are shown in light blue (contours and data points), 3$\sigma$ upper limit measurements are shown in grey. The dark blue solid and dashed lines show the running median and 16th and 84th percentile measurements. The one-to-one relation is shown in black. These results show that the running median measurements follow the one-to-one relation very closely, and therefore that once corrected following Eq. \ref{eq:gas_equation_correction}, optical depth is a good proxy for gas surface density, even in resolved observations. 
+
+The scale-dependent nature of the $\tau_V - \Sigma_{gas}$ relation may be an important contributor to some of the disagreements reported in the literature when deriving cold gas mass surface densities from optical IFU emission line measurements using a calibration derived for integrated measurements \cite[e.g.][]{barrera-ballesteros2020}. The resolution dependence of the  $\tau_V - \Sigma_{gas}$ relation arises from the correlated distribution of gas clouds and star forming regions on small scales. This correlated distribution of star forming regions is also shown through the factor of $\sim$2 lower dust attenuation derived from stellar reddening compared to reddening of Balmer emission lines found by \cite{kreckel2013} which is attributed to the preferential location of star forming regions in gas and dust rich regions \citep{calzetti1994, calzetti2000, charlot2000, hao2011}.
+
+The resolution dependence of measured ISM parameters is also demonstrated by \cite{grasha2022}. They show that low resolution measurements of ionization parameter and ISM pressure typically result in higher measured values than when observed at  high resolutions. This result is in agreement with our results, by extension of the result that just like optical depth, the integrated ionization parameter and ISM pressure measurements are biased towards H$\alpha$-bright regions. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig8.png}
+    \caption{The relation between optical depth and gas surface density using PHANGS-ALMA to derive the molecular gas content and an assumed constant atomic hydrogen surface density of 6 M$_{\odot}$ pc$^{-2}$ \citep{leroy2021}. The data are coloured by each galaxy, as shown in the legend. Red lines show the integrated gas surface density relation as in Equation \ref{eq:gas_equation_brinchmann} (dash-dotted) and the resolved gas surface density relation we derived in Equations \ref{eq:resolved_gas_equation} and \ref{eq:gas_equation_correction} (solid). The black solid and dashed lines show the running median and 16th and 84th percentile measurements. }
+    \label{fig:MUSE_optical_depth_comparison_PHANGS_ALMA}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{figures/fig9.png}
+    \caption{The relation between gas surface densities we derived from the optical emission and direct measurmentsusing PHANGS-ALMA to derive the molecular gas content and an assumed constant atomic hydrogen surface density of 6 M$_{\odot}$ pc$^{-2}$ \citep{leroy2021}. The PHANGS-ALMA detections are shown in light blue (contours and data points) and the upper limits are shown in grey. The dark blue solid and dashed lines show the running median and 16th and 84th percentile measurements. The one-to-one relation is shown in black.}
+    \label{fig:MUSE_gas_surface_density_comparison_PHANGS_ALMA}
+\end{figure}
+
+\subsubsection{Integrated gas mass comparisons to xCOLD GASS}
+\label{sec:comparison_xcoldgass}
+We now test whether we can accurately infer the total molecular gas mass of galaxies using optical emission line information obtained from fibre observations with limited aperture sizes (e.g. 3\arcsec\ for SDSS and 1\arcsec\ for DESI). We use the SDSS sample described in Sec. \ref{sec:model_validation} for which we derive total molecular gas masses as:
+\begin{equation}
+    \textrm{M}_{H2} = \frac{2\pi A}{e} \Sigma_{gas} R_{50}^{2}, 
+\end{equation}
+where $R_{50}$ is the r-band Petrosian half-light radii from the NASA-Sloan Atlas \citep{blanton2011}, and $\Sigma_{gas}$ is the gas surface density as calculated through Equation \ref{eq:resolved_gas_equation}. The factor $\frac{2\pi}{e}$ results from the integration of the assumed geometry of the gas in an exponential disk. The factor $A$ accounts for the combined effects of several factors: (1) the relation between the measured $\Sigma_{gas}$ and the gas surface density at the effective radius of a Sersic profile, (2) the effect of the average inclination of a galaxy and (3) the relation between the r-band $R_{50}$ and the effective radius of the gas profile \citep{casasola2017}. 
+
+To calibrate the value of the factor $A$, we use the total molecular gas masses of galaxies in the xCOLD GASS survey, which are measured using CO(1-0) line luminosities and a metallicity dependent $\alpha_{CO}$ conversion function. \citep{saintonge2017}. We do not make direct comparisons between the SDSS- and xCOLD GASS-derived $M_{H2}$ values, as the low redshifts of the xCOLD GASS sample ($z<0.05$) mean that aperture effects are significant, and that the important OII[3627\AA,3629\AA] emission lines are not always accessible in the SDSS spectra. Instead, we compare the molecular gas masses of the xCOLD GASS galaxies with the median value in our SDSS sample at fixed stellar mass and star formation rate. Using this method, we calibrate a value of $\log(A) = 0.12$. We have not included atomic Hydrogen in the calibration, as a large fraction of the atomic Hydrogen of galaxies is located in an extended region around the galaxy which is not probed by our measurements using emission line spectroscopy.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig10.pdf}
+    \caption{Molecular gas masses, gas fractions and star formation efficiencies derived from SDSS spectroscopy compared to CO-based measurements from the xCOLD GASS survey \citep{saintonge2017}. The binned data in the $M_{*}$-SFR plane are the median measurements derived in each bin with 10 measurements or more. The coloured data points show the xCOLD GASS measurements. The colour of each of these measurements shows the value of the molecular gas mass, gas fraction and star formation effiencies as described in the colour bar above each panel. The inset figures show the distribution of the xCOLD GASS measurement minus the median SDSS derived measurement in the corresponding bin in the $M_{*}$-SFR plane. The red star marks the galaxy for which we show the posterior distribution in Figure \ref{fig:corner_plot_example}.}
+    \label{fig:MH2_FH2_SFE_comparison_xCOLDGASS}
+\end{figure*}
+
+In Figure \ref{fig:MH2_FH2_SFE_comparison_xCOLDGASS}, we show the distribution of the molecular gas masses, gas fractions ($f_{H2} \equiv M_{H2}/M_{\ast}$) and star formation efficiencies ($SFE \equiv SFR / M_{H2}$) we derive for the SDSS sample across the $M_{*}$-SFR plane. Overplotted are the xCOLD GASS galaxies with the same measurements inferred from direct CO(1-0) observations.  The figure shows that we are able to recover gas measurements for galaxies with a wide range of stellar masses and star formation rates, with the method performing equally well for star-forming main sequence galaxies and massive passive objects. 
+The median scatter of $\sim0.25-0.3$ dex is similar to other calibrations of SDSS-based molecular gas masses, such as \cite{concas2019}, \cite{yesuf2019} and \cite{piotrowska2020}. An advantage of our method is that by calibrating on binned measurements in the $M_{*}$-SFR plane, we avoid some limitations due to SDSS aperture effects which are largest at the low redshifts of the xCOLD GASS survey. 
+
+\subsection{Understanding the scatter of the mass-metallicity relation}
+\label{sec:MZR}
+We use the SDSS DR8 sample to study the comparative roles of gas and star formation in the scatter of the MZR, the relation between stellar mass and gas-phase metallicity. We use the same sample of galaxies as used in Section \ref{sec:comparison_xcoldgass}, but exclude galaxies with star formation rate and stellar mass aperture correction factors smaller than 0.1 or larger than 1.0, spectra flagged unreliable and spectra with non-galaxy target types. The stellar mass measurements are from the MPA-JHU catalog \citep{kauffmann2003a}. We use the \cite{pettini2004} O3N2 indicator to calculate the metallicities that go in our MZR; using the metallicities from the photoionization modelling, in addition to the gas surface densities also derived from the models, could introduce spurious correlations due to parameter degeneracies, as has been shown by \cite{mingozzi2020} for metallicity and ionization parameter measurements.
+
+To explore the nature of the scatter, we fit the MZR using the functional form defined in \cite{curti2020}, which includes the contribution of a third parameter, traditionally taken to be either SFR or $M_{gas}$:
+\begin{equation}
+\label{eq:mass_metallicity_scatter_function}
+    Z(M, A) = Z_0 - \frac{\gamma}{\beta} \mathrm{log}(1 + (M/M_0(A))^{-\beta} ) .
+\end{equation}
+In this equation, $Z$ is the metallicity, $M$ the stellar mass, $Z_0$ the metallicity at the high mass end, $\gamma$ the power law index of the slope at low stellar masses, $\beta$ constrains the width of the transition region, $M_0(A)$ the turn-over stellar mass (where $\textrm{log}(M_0(A)) = m_0 + m_1\textrm{log}(A)$) and $A$ is the third parameter used to describe the scatter in the relation.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=2\columnwidth]{figures/fig11.pdf}
+    \caption{The scatter in the MZR as a function of molecular gas mass (top-left), molecular gas fraction (bottom-left), star formation rate(top-right) and specific star formation rate(bottom-right). The data points show the mass metallicity relation binned along stellar mass and the 3$^{\textrm{rd}}$ parameters listed above, coloured by the 3$^{\textrm{rd}}$ parameter value. The coloured lines show the best fit relation according to equation \ref{eq:mass_metallicity_scatter_function}. The black solid and dotted lines show the median and 16$^{\textrm{th}}$ and 84$^{\textrm{th}}$ percentiles of the MZR. The inset plots show the residuals between the binned data and the best fit 3-parameter relation (darkblue) and the MZR (lightblue).}
+    \label{fig:MZR_binned}
+\end{figure*}
+
+In our comparisons we use 4 quantities to derive the scatter in the MZR: molecular gas mass, molecular gas fraction ($F_{H2} = M_{H2}/M_{*}$), star formation rate and specific star formation rate. We use our calibrated gas mass measurements, and the aperture-corrected star formation rates from \cite{brinchmann2004}. We fit the relation after grouping the data into 30 bins along stellar mass and each of the 3$^{\textrm{rd}}$ parameters we use. Both the binned data points and best-fit models are shown in Fig. \ref{fig:MZR_binned}, with the values of the best fit parameters presented in Table \ref{tab:mzr_best_fits}. The introduction of the 3$^{\textrm{rd}}$ parameters reduces the scatter in each of the chosen cases. In Figure \ref{fig:MZR_binned} the residuals of the 3 parameter relation are given by $\sigma_{3\: par.}$ and the residuals in the MZR given this particular binning by $\sigma_{2\: par.}$. 
+A large value of $\sigma_{2\: par.}$ shows that the chosen 3$^{\textrm{rd}}$ parameter effectively describes the scatter in the MZR. The final residual $\sigma_{3\: par.}$ describes how well this 3-parameter relation reduces the scatter after fitting the binned data with the function in Equation \ref{eq:mass_metallicity_scatter_function}. Figure \ref{fig:MZR_binned} shows that each of these quantities describes the scatter in the MZR by a comparable amount. The molecular gas mass and gas fraction parameters reduce the scatter in the 3-parameter relation the most with a final residual scatter of $\sim$0.015 dex. We also show the distribution of the metallicity residuals over the individual bins in Figure \ref{fig:MZR_binned_metallicity_residuals}. 
+
+The role of a third parameter in driving the scatter of the MZR is an area which has been studied extensively \citep[e.g.][]{ellison2008}. The effect of star formation in the scatter of the MZR was formalized into the fundamental metallicity relation (FMR) by \cite{mannucci2010}: the relation between stellar mass, star formation and metallicity. Further studies of the FMR expand the relation to lower stellar masses and higher redshifts \citep{mannucci2011, cresci2019, curti2020}. However, gas has also been shown to play an important role in the scatter of the MZR by \cite{bothwell2013, bothwell2016, lara-lopez2013, hughes2013} and \cite{brown2018} through direct measurements of atomic and molecular gas content. Their results suggest that gas is more fundamental than SFR in  driving the scatter in the MZR. The respective roles of star formation and gas have also been studied using the EAGLE simulations \citep{loon2021}. They show that gas fraction correlates most strongly with the scatter in the MZR. Our measurements show that gas and star formation processes both describe the scatter in the MZR, but that molecular gas mass and molecular gas fraction are most effective at reducing the scatter, in agreement with similar studies performed with HI and CO observations and the predictions of simulations and theory. 
+This result importantly shows that cold gas masses derived from emission line measurements are sufficiently accurate to derive the role of cold gas in galaxy evolution processes. 
+
+\begin{table}
+ \centering
+ \caption{Best-fit parameter values for the mass-metallicity + 3$^{\textrm{rd}}$ parameter relations using the parametrization from Equation \ref{eq:mass_metallicity_scatter_function}.}
+ \label{tab:mzr_best_fits}
+\begin{tabular}{llllll}
+\hline
+\hline
+                   & \textbf{$Z_0$} & \textbf{$m_0$} & \textbf{$m_1$} & \textbf{$\gamma$} & \textbf{$\beta$} \\ \hline
+Molecular gas mass            & 8.77           & 6.77           & 0.37           & 0.39              & 3.16             \\
+Molecular gas fraction        & 8.76           & 10.78          & 0.61           & 0.24              & 1.99             \\
+star formation rate           & 8.76           & 10.02          & 0.45           & 0.45              & 5.73             \\
+specific star formation rate  & 8.76           & 18.69          & 0.86           & 0.24              & 2.84             \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=2\columnwidth]{figures/fig12.pdf}
+    \caption{The residuals in the 3-parameter relation between stellar mass, metallicity and gas surface density (top-left), gas fraction (bottom-left), star formation rate(top-right) and specific star formation rate(bottom-right). Only bins with 25 or more measurements are included.}
+    \label{fig:MZR_binned_metallicity_residuals}
+\end{figure*}
+
+
+\section{Summary and conclusion}
+\label{sec:conclusion}
+We use photoionization models and Simulation Based Inference to derive cold interstellar medium masses of galaxies from optical emission lines. The methods we use in our photoionization models are a combination of successful features from previous work. We mainly base our models on the method used by \cite{byler2017} whilst reintroducing the dust-to-metal ($\xi$) parameter from the \cite{charlot2001} models which is essential to derive gas masses from the photoionization models \citep{brinchmann2013}. The implementation of Simulation Based Inference opens the door to applying photoionization models to the largest samples of galaxies. Inference using MCMC methods demand significantly more computing power and inference methods sparsely exploring the parameter space lose much of the information on degeneracies between parameters. This makes Simulation Based Inference a crucial tool to make photoionization modelling possible for the samples sizes of the coming era of large spectroscopic surveys, which will deliver tens of millions spectroscopic observations of galaxies.
+
+To validate our results we compare our measurement to a range of other measurements for many of the quantities we derive from the photoionization modelling. We provide validation of our gas mass measurements for both resolved and fully integrated observations. To do so we derive a resolution-dependent relation between gas surface density and optical depth. This makes globally validated $\tau_{V}$-$\Sigma_{gas}$ relations applicable over a wide range of resolutions. We demonstrate this by deriving gas surface densities from the optical depth measurements of galaxies in the PHANGS-MUSE survey at resolutions of $\sim7.5"$ ($\sim$500 pc). We also show that we can derive gas masses for galaxies observed in the SDSS survey, which we validated using xCOLD GASS direct measurements. Using this technique we can accurately derive the molecular gas mass of galaxies with a wide range of stellar masses and star formation rates. 
+
+In this work we show that the gas mass measurements we derive allow us to study the role of gas in galaxy evolutionary processes. This is important to establish as the measurement of gas masses of galaxies using the Balmer decrement and other optical emission lines is a less precise measurement method than other available methods, however, the sample sizes accessed are unmatched. We demonstrate sufficient accuracy by studying the role of molecular gas in the mass-metallicity relation. We confirm that gas plays a fundamental role in the scatter of the relation, which has been shown previously through direct atomic and molecular gas measurements and simulations \citep[e.g.][]{bothwell2013, bothwell2016, loon2021}. This result demonstrates that cold gas masses derived from emission line measurements are sufficiently accurate to derive the role of cold gas in galaxy evolution, opening new parameter space with large, deep next-generation surveys such as DESI. 
+
+
+\section*{Acknowledgements}
+The Acknowledgements section is not numbered. Here you can thank helpful
+colleagues, acknowledge funding agencies, telescopes and facilities used etc.
+Try to keep it short.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Data Availability}
+
+ 
+The inclusion of a Data Availability Statement is a requirement for articles published in MNRAS. Data Availability Statements provide a standardised format for readers to understand the availability of data underlying the research results described in the article. The statement may refer to original data generated in the course of the study or to third-party data analysed in the article. The statement should describe and provide means of access, where possible, by linking to the data or providing the required accession numbers for the relevant databases or DOIs.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{references} % if your bibtex file is called example.bib
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Comparisons to other metallicity calibrations}
+\label{sec:appendix_metallicities}
+
+We also compare our gas phase metallicities to a range of metallicity calibrations using common strong line metallicity indicators. For the O3N2 and N2 calibrators we show parametrizations by \cite{pettini2004, nagao2006, maiolino2008, marino2013, brown2016} and \cite{curti2017}. The O3N2 indicator is described in Equation \ref{eq:O3N2_indicator} and the N2 indicator is described by \citep{storchi-bergmann1994}:
+\begin{equation}
+    \textrm{N2 = log}\left(\frac{\textrm{NII} [6584\textrm{\AA}]}{\textrm{H}\alpha}\right).
+\end{equation}
+We also use the R23 indicator \citep{pagel1979}:
+\begin{equation}
+    \textrm{R23 = log}\left(\frac{\textrm{OII} [3726\textrm{\AA}, 3729\textrm{\AA}] + \textrm{OIII} [4959\textrm{\AA}, 5007\textrm{\AA}]}{\textrm{H}\beta}\right)
+\end{equation}
+with parametrizations from \cite{mcgaugh1991, zaritsky1994, nagao2006, maiolino2008} and \cite{curti2017}. And the N2O2 indicator \citep{alloin1979}:
+\footnotetext[1]{Dust attenuation corrected using the Balmer decrement and equations \ref{CH2000_transmission} and \ref{dust_attenuation}. Assuming an intrinsic Balmer decrement of 2.86.}
+\begin{equation}
+    \textrm{N2O2 = log}\left(\frac{\textrm{NII} [6584\textrm{\AA}]\textrm{\footnotemark[1]}}{\textrm{OII} [3726\textrm{\AA}, 3729\textrm{\AA}]\textrm{\footnotemark[1]}}\right).
+\end{equation}
+with parametrizations from \cite{kewley2002, nagao2006} and \cite{brown2016}. For the N2O2 indicator the attenuation corrected line strengths have to be used. The attenuation correction is performed using the Balmer decrement. 
+
+The comparisons in Figure \ref{fig:metallicity_indicator_comparison} show that the metallicities we derive fit within the range of previous calibrations. We note that our metallicity estimates are somewhat lower than typical theoretical calibrations using photoionization modelling.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.95\columnwidth]{figures/figA1.png}
+    \caption{A comparison between the gas phase metallicities we derived and other calibrations through several commonly used metallicity indicators. In these figures the data points are coloured using the ionisation parameter with the same colourbar as in Figure \ref{fig:model_metallicity_vs_PP04_O3N2}.}
+    \label{fig:metallicity_indicator_comparison}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex
