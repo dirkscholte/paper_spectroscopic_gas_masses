@@ -328,8 +328,6 @@ We can measure the resolution dependence of $\Sigma_{\textrm{gas}}^{\textrm{BC}}
     \label{eq:gas_correction}
 \end{equation}
 where $\overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha}$ is the H$\alpha$-weighted mean gas surface density and $\overline{\Sigma}_{\textrm{gas}}$ is the mean gas surface density in a galaxy. We use H$\alpha$ flux as the weight, allowing us to measure the gas surface density along the line of sight of star forming regions, as those dominate the H$\alpha$ emission. From this we subtract the mean gas surface density, which represents the contribution of the ambient ISM $\Sigma_{\textrm{gas}}^{\textrm{ISM}}$ to the total dust attenuation. 
-%In Figure \ref{fig:resolution_dependence_tau_SD} we show that the H$\alpha$ flux is a reliable weighting to retrieve the correction needed due to the environments sampled by optical depth measurements, as the H$\alpha$-weighted mean optical depth is resolution independent, unlike the mean optical depth.
-
 We quantify the resolution dependence of $\Sigma_{\textrm{gas}}^{\textrm{BC}}$ using the molecular gas surface density maps from the CO(2-1) PHANGS-ALMA observations,  and the H$\alpha$ maps from the PHANGS-MUSE observations, for all 19 galaxies in the overlap of the two surveys. We do this by convolving the ALMA and MUSE maps to a range of resolutions between $\sim2"$ and $\sim100"$ ($\sim$ 100 to 10000 pc). Figure \ref{fig:Excess_SD_dependence_resolution_tau} shows $\overline{\Sigma}_{\textrm{gas}}^{\textrm{BC}}$ as defined in Eq. \ref{eq:gas_correction} for each galaxy, at each spatial resolution probed. We use the distances as in \cite{leroy2021} to derive the physical resolution of the observations. As expected, $\overline{\Sigma}_{\textrm{gas}}^{\textrm{BC}}$ varies with the physical scale, but also displays systematic galaxy-to-galaxy variations depending on the global optical depth, as high $\tau_{V}$ galaxies have more gas rich star forming regions compared to low $\tau_{V}$ galaxies. Here, the optical depth measurement is derived using the Balmer decrement and Equation \ref{eq:optical_depth_BD}. 
 
 At the lowest resolutions (FWHM $\gtrsim 1$ kpc), Figure  \ref{fig:Excess_SD_dependence_resolution_tau} shows that most galaxies approach the scaling of FWHM$^{-2}$ (dotted lines), as expected. At high resolutions (FWHM $< 1$~kpc), the slope of the relation becomes more shallow, even reaching the theoretical constant scaling for the galaxies with the highest ISM densities (i.e. those with the largest global values of $\tau_{V}$). The transition between the two regimes (as described in the diagram in Fig. \ref{fig:diagram_resolution_dependence_gas_cloud}) occurs at different resolutions for different galaxies, depending on the physical scale of (clusters of) birth clouds. Due to the combined effects of many birth clouds blending together the resolution dependence of most galaxies is somewhere between the FWHM$^{-2}$ and constant dependencies, for most of the resolutions covered. 
@@ -364,45 +362,6 @@ The total resolved gas surface density relation can now be derived by adding the
 \end{split}
 \end{equation}
 where the ambient ISM ($\Sigma_{\textrm{gas}}^{\textrm{ISM}}$) and birth cloud ($\Sigma_{\textrm{gas}}^{\textrm{BC}}$) terms are given by Equations \ref{eq:gas_equation_brinchmann} and \ref{eq:resolved_gas_equation}, respectively. 
-
-
-
-%This is because the optical depth measurement in an integrated observation is largely determined by the star forming regions where most of the emission line flux originates. This makes the optical depth in an integrated observation a biased measurement of gas surface density, dominated by star forming regions with high gas surface density. Global relations between optical depth and gas surface densities are therefore in practice relations between the optical depth measured (mostly) in high gas surface density star forming regions and the mean gas surface density averaged over the galaxy. The resolved relation between $\tau_V$ and $\Sigma_{gas}$ is therefore a function of the physical resolution of the observations. For example, in Figure \ref{fig:MUSE_optical_depth_comparison_PHANGS_ALMA} it is obvious that the integrated gas surface density relation from Equation \ref{eq:gas_equation_brinchmann} (dot-dashed line) does not accurately describe the $\tau_V-\Sigma_{gas}$ relation at $\sim500$ pc resolution. We derive the resolved gas surface density from the PHANGS-ALMA CO(2-1) data using a constant $\alpha_{CO}$ \citep[][]{leroy2021}. In the analysis we include spaxels with coverage in both PHANGS-MUSE and PHANGS-ALMA observations.
-
-%To derive a flexible scale-dependent relation, we need to parameterize a correction to the global relation (Eq. \ref{eq:gas_equation_brinchmann}) that will factor in the different environments which are averaged over in an observation at any given resolution. The mean correction needed for resolved gas surface densities sampled through the optical depth measurement can be described by the following equation:
-%\begin{equation}
-%    \overline{\Sigma}_{\textrm{gas}}^{\textrm{correction}} = \overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}} 
-%    \label{eq:gas_correction}
-%\end{equation}
-%where $\overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha}$ is the H$\alpha$-weighted mean gas surface density and $\overline{\Sigma}_{\textrm{gas}}$ is the mean gas surface density. We use \textcolor{magenta}{observed} H$\alpha$ flux as the weighting, as regions brightest in this line within a given resolution element are also those that contribute the most its $\tau_V$ measurement. In Figure \ref{fig:resolution_dependence_tau_SD} we show that the H$\alpha$ flux is a reliable weighting to retrieve the correction needed due to the environments sampled by optical depth measurements, as the H$\alpha$-weighted mean optical depth is resolution independent, unlike the mean optical depth.
-
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=\columnwidth]{figures/fig6.pdf}
-%    \caption{Resolution dependence of optical depth measurements and gas surface densities probed. Optical depths are derived using the Balmer decrement from the PHANGS-MUSE data and molecular Hydrogen surface densities are derived from PHANGS-ALMA.}
-%    \label{fig:resolution_dependence_tau_SD}
-%\end{figure}
-
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=\columnwidth]{figures/fig7.pdf}
-%    \caption{Resolved environmental bias in the gas surface densities sampled through the optical depth. Optical depths are derived using the Balmer decrement from the PHANGS-MUSE data and molecular Hydrogen surface densities are derived from PHANGS-ALMA.}
-%    \label{fig:Excess_SD_dependence_resolution_tau}
-%\end{figure}
-
-%We quantify the scale of the correction factor using molecular gas surface density maps from the CO(2-1) PHANGS-ALMA observations,  and the H$\alpha$ maps from the PHANGS-MUSE observations, for all 19 galaxies in the overlap of the two surveys. We do this by convolving the ALMA and MUSE maps to a range of resolutions between $\sim2"$ and $\sim100"$ ($\sim$ 100 to 10000 pc). Figure \ref{fig:Excess_SD_dependence_resolution_tau} shows the correction factor of Eq. \ref{eq:gas_equation_correction} for each galaxy, at each spatial resolution probed. We use the distances as in \cite{leroy2021} to derive the physical resolution of the observations. As expected, the correction factor varies with the physical scale, but also displays systematic galaxy-to-galaxy variations best parametrised by the optical depth (color-coding in Fig. \ref{fig:Excess_SD_dependence_resolution_tau}). Here, the optical depth measurement is derived using the Balmer decrement and Equation \ref{eq:optical_depth_BD}. Using these two dependencies of the resolved environmental bias, we construct a correction on the integrated relation. This allows us to describe the resolved relation between optical depth and gas surface density as:
-%\begin{equation}
-%\label{eq:resolved_gas_equation}
-%    \Sigma_{\textrm{gas}}^{\textrm{resolved}} = \Sigma_{\textrm{gas}}^{\textrm{integrated}}(\tau_{V}, Z, \xi) + \Sigma_{\textrm{gas}}^{\textrm{correction}}(\textrm{FWHM}, \tau_{V}, Z, \xi), 
-%\end{equation}
-%where the first term on the right hand side is the integrated relation presented in Eq.\ref{eq:gas_equation_brinchmann}, and FWHM is the full width at half maximum resolution of the resolved observations in parsec. The correction is defined as:
-%\begin{equation}
-%\label{eq:gas_equation_correction}
-%    \Sigma_{\textrm{gas}}^{\textrm{correction}} =
-%    \overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}}
-%    = \frac{9.56\textrm{FWHM}^{-0.637}\tau_{V}^{2.98}}{\xi Z}
-%\end{equation}
-%which is based on the best-fit linear relation between FWHM, $\overline{\tau}_{V}^{\textrm{H}\alpha}$ and $\overline{\Sigma}_{\textrm{gas}}^{\textrm{H}\alpha} - \overline{\Sigma}_{\textrm{gas}}$ in log-space. The parameters $\xi$ and $Z$ are included for the dust to gas conversion but not considered as free parameters, the precise role of these parameters in the relation needs to be verified using data sets that span a larger metallicity range. The best fit relation is shown in Figure \ref{fig:Excess_SD_dependence_resolution_tau}.
 
 Equipped with this resolution-dependent relation between gas surface density and optical depth/dust attenuation, we can now test how well gas surface densities can be estimated from optical emission lines flux measurements and photoionization modeling. We apply our photoionization models to the PHANGS-MUSE observations at $7.5"$ resolution. We train a simulation based inference model for the MUSE observations as the MUSE spectrograph does not cover the [OII]3727\AA\ and [OII]3729\AA\ emission lines. Due to these missing lines we have poor constraints on the ionization parameter measurements, however, the other parameters which directly feed into the gas surface density measurements are not affected. We compare the gas surface density measurements we derive using Equation \ref{eq:resolved_gas_equation} to those directly measured. As the optical depth measurement is sensitive to the total atomic$+$molecular gas content along the line of sight, we add to the molecular gas surface density measured from the PHANGS-ALMA CO(2-1) maps \citep{leroy2021} a constant atomic hydrogen surface density of 6 M$_{\odot}$ pc$^{-2}$ \citep{barrera-ballesteros2020}. We only apply our photoionization models to spaxels which have H$\alpha$ signal-to-noise > 15 and where the photoionization is caused by star formation activity, as determined by the \cite{kauffmann2003} criterion. 
 
